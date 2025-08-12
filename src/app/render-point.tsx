@@ -102,6 +102,7 @@ const RenderPoint = ({
   }, [statusGame.isPlay, statusGame.isSuccess, statusGame.error]);
 
   const handleClickPoint = (index: number) => {
+    if (statusGame.error) return;
     const point = points.find((p) => p.index === index);
     const isMinPoint = points.some((p) => p.index < index && !p.isClick);
     if (point?.isClick) return;
@@ -176,9 +177,11 @@ const RenderPoint = ({
       {points.map((point) => (
         <div
           key={point.index}
-          className={`size-16 flex flex-col gap-0 items-center justify-center rounded-full border border-black cursor-pointer  ${
-            point.isClick ? "bg-red-500 " : "bg-white "
-          } ${point.time === 0 && "hidden"} `}
+          className={`size-16 flex flex-col gap-0 items-center justify-center rounded-full border border-black ${
+            statusGame.error ? "cursor-default" : "cursor-pointer"
+          } ${point.isClick ? "bg-red-500 " : "bg-white "} ${
+            point.time === 0 && "hidden"
+          } `}
           onClick={() => handleClickPoint(point.index)}
           style={{
             position: "absolute",
